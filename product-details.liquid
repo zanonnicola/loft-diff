@@ -12,11 +12,21 @@
   
   	{% include 'variant-qty-controls', qtyMin:1 %}
 
-     <div role="button" tabindex="0" class="add-to-cart-btn medium-down--hide js-prod-show-available" id="AddToCartDesk" {%if sold_out %}style="display:none"{%endif%}>
+    {% if collection.title contains "Cell Biologique" or collection.title contains "Balm Micro" %}
+      {% if customer %}
+        <div role="button" tabindex="0" class="add-to-cart-btn medium-down--hide js-prod-show-available" id="AddToCartDesk" {%if sold_out %}style="display:none"{%endif%}>
+          <span class="btn cart-error">{{ 'products.product.cart_add_error' | t }}</span>
+          <span class="btn cart-normal">{{ 'products.product.add_to_cart' | t }}</span>
+          <span class="btn cart-success">{{ 'products.product.cart_add_success' | t }} {{ 'icon-tick.svg' | asset_url | img_tag }}</span>
+        </div>
+      {% endif %}
+    {% else %}
+    <div role="button" tabindex="0" class="add-to-cart-btn medium-down--hide js-prod-show-available" id="AddToCartDesk" {%if sold_out %}style="display:none"{%endif%}>
       <span class="btn cart-error">{{ 'products.product.cart_add_error' | t }}</span>
       <span class="btn cart-normal">{{ 'products.product.add_to_cart' | t }}</span>
       <span class="btn cart-success">{{ 'products.product.cart_add_success' | t }} {{ 'icon-tick.svg' | asset_url | img_tag }}</span>
     </div>
+    {% endif %}
  
     <button class="btn small--hide medium--hide disabled js-prod-show-soldout" disabled id="AddToCartSold" {%unless sold_out %}style="display:none"{%endunless%}>
       <span id="AddToCartTextDesk" class="js-prod-soldout-btn-text">{{ 'products.product.sold_out' | t }}</span>
