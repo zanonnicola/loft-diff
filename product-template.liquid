@@ -51,24 +51,49 @@ Check if the product is on sale and set a variable to be used below.
     {% comment %}
     MOBILE TOP BUTTONS AND PRICING
     {% endcomment %}
-    <div class="product-top-buttons grid--full main-content wrapper tbm_mobile-pricing">
-      <div class="grid__item one-half">
-        <div class="top-button-inner">
-          <span id="ProductPriceMobile" class="h2 js-prod-price" itemprop="price" content="{{ current_variant.price | divided_by: 100  }}">
-            {{ current_variant.price | money  }}
-          </span>
+    {% if collection.title contains "Cell Biologique" or collection.title contains "Balm Micro" %}
+      {% if customer %}
+      <div class="product-top-buttons grid--full main-content wrapper tbm_mobile-pricing">
+        <div class="grid__item one-half">
+          <div class="top-button-inner">
+            <span id="ProductPriceMobile" class="h2 js-prod-price" itemprop="price" content="{{ current_variant.price | divided_by: 100  }}">
+              {{ current_variant.price | money  }}
+            </span>
+          </div>
+        </div>
+        <div class="grid__item one-half">
+          <div class="top-button-inner">
+            <button type="submit" name="add" id="AddToCart" id="AddToCart-{{ section.id }}" class="btn mobile-add-to-cart-btn js-prod-disable-on-soldout" {% if sold_out %}disabled{% endif %}>
+              <span id="AddToCartText" class="js-prod-show-available" {% if sold_out %}style="display:none"{% endif %}>{{ 'products.product.add_to_cart' | t }}</span>
+              <span id="AddToCartTextDesk" class="js-prod-show-soldout js-prod-soldout-btn-text" {% unless sold_out %}style="display:none"{% endunless %}>{{ 'products.product.sold_out' | t }}</span>
+            </button>
+          </div>
         </div>
       </div>
-      <div class="grid__item one-half">
-        <div class="top-button-inner">
-          <button type="submit" name="add" id="AddToCart" id="AddToCart-{{ section.id }}" class="btn mobile-add-to-cart-btn js-prod-disable-on-soldout" {% if sold_out %}disabled{% endif %}>
-            <span id="AddToCartText" class="js-prod-show-available" {% if sold_out %}style="display:none"{% endif %}>{{ 'products.product.add_to_cart' | t }}</span>
-            <span id="AddToCartTextDesk" class="js-prod-show-soldout js-prod-soldout-btn-text" {% unless sold_out %}style="display:none"{% endunless %}>{{ 'products.product.sold_out' | t }}</span>
-          </button>
-        </div>
-
+      {% else %}
+      <div class="product-top-buttons grid--full main-content wrapper tbm_mobile-pricing">
+      <p>Prices are shown only to registered users</p>
       </div>
-    </div>
+      {% endif %}
+      {% else %}
+      <div class="product-top-buttons grid--full main-content wrapper tbm_mobile-pricing">
+        <div class="grid__item one-half">
+          <div class="top-button-inner">
+            <span id="ProductPriceMobile" class="h2 js-prod-price" itemprop="price" content="{{ current_variant.price | divided_by: 100  }}">
+              {{ current_variant.price | money  }}
+            </span>
+          </div>
+        </div>
+        <div class="grid__item one-half">
+          <div class="top-button-inner">
+            <button type="submit" name="add" id="AddToCart" id="AddToCart-{{ section.id }}" class="btn mobile-add-to-cart-btn js-prod-disable-on-soldout" {% if sold_out %}disabled{% endif %}>
+              <span id="AddToCartText" class="js-prod-show-available" {% if sold_out %}style="display:none"{% endif %}>{{ 'products.product.add_to_cart' | t }}</span>
+              <span id="AddToCartTextDesk" class="js-prod-show-soldout js-prod-soldout-btn-text" {% unless sold_out %}style="display:none"{% endunless %}>{{ 'products.product.sold_out' | t }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endif %}
 
     <div class="product-template__container page-width" itemscope itemtype="http://schema.org/Product" id="ProductSection-{{ section.id }}" data-enable-history-state="true">
       <meta itemprop="name" content="{{ product.title }}">
@@ -119,9 +144,19 @@ Check if the product is on sale and set a variable to be used below.
           {% if section.settings.show_vendor %}
           <h4 itemprop="brand" class="product-single__vendor">{{ product.vendor | link_to_vendor }}</h4>
           {% endif %}
+          {% if collection.title contains "Cell Biologique" or collection.title contains "Balm Micro" %}
+            {% if customer %}
+              <span id="ProductPrice" class="h2 small--hide medium--hide js-prod-price" itemprop="price" content="{{ current_variant.price | divided_by: 100  }}">
+                {{ current_variant.price | money  }}
+              </span>
+              {% else %}
+              <p>Prices are shown only to registered users</p>
+            {% endif %}
+          {% else %}
           <span id="ProductPrice" class="h2 small--hide medium--hide js-prod-price" itemprop="price" content="{{ current_variant.price | divided_by: 100  }}">
             {{ current_variant.price | money  }}
           </span>
+          {% endif %}
           {% if on_sale %}
           <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
           <p id="ComparePrice" data-compare-text="{{ 'products.product.compare_at' | t }}">
